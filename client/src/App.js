@@ -75,9 +75,41 @@ function App() {
     }, [screenStream]);
 
 
+    function stopRecording() {
+        // TODO
+    }
+
     function startRecording() {
         if (screenStream && voiceStream && !mediaRecorder) {
-            // TODO
+            // update state
+            setRecording(true);
+
+            videoRef.current.removeAttribute('src');
+            linkRef.current.removeAttribute('href');
+            linkRef.current.removeAttribute('download');
+
+            let mediaStream;
+            if (voiceStream === 'unavailable') {
+                mediaStream = screenStream;
+            } else {
+                mediaStream = new MediaStream([
+                    ...screenStream.getVideoTracks(),
+                    ...voiceStream.getAudioTracks()
+                ]);
+            }
+
+            mediaRecorder = new MediaRecorder(mediaStream);
+
+            mediaRecorder.ondataavailable = ({ data }) => {
+                dataChunks.push(data)
+                socketRef.current.emit('screenData:start', {
+                    username: username.current,
+                    data
+                })
+            };
+            mediaRecorder.onstop = stopRecording;
+
+            mediaRecorder.start(250);
         }
     }
 
