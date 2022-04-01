@@ -14,5 +14,5 @@ const io = new Server(server, {
 io.on('connection', onConnection);
 
 server.listen(4000, () => {
-    console.log('Server ready 🚀 ')
+    console.log('Server ready 🚀');
 });
