@@ -4,16 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "express": "^4.17.3",
     "fluent-ffmpeg": "^2.1.2",
     "socket.io": "^4.4.1"
-  },
-  "type": "module",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
