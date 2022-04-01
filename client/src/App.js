@@ -140,6 +140,8 @@ function App() {
         }
     }
 
+    if (loading) return <Loader type='Oval' width='60' color='#0275d8' />;
+
     return (
         <>
             <h1>Screen Recording App</h1>
