@@ -76,7 +76,24 @@ function App() {
 
 
     function stopRecording() {
-        // TODO
+        // update state
+        setRecording(false);
+
+        // tell server that screen recording was ended
+        socketRef.current.emit('screenData:end', username.current);
+
+        const videoBlob = new Blob(dataChunks, {
+            type: 'video/webm'
+        });
+        const videoSrc = URL.createObjectURL(videoBlob);
+
+        videoRef.current.src = videoSrc;
+        linkRef.current.href = videoSrc;
+        // name of downloadable file
+        linkRef.current.download = `${Date.now()}-${username.current}.webm`;
+
+        mediaRecorder = null;
+        dataChunks = [];
     }
 
     function startRecording() {
@@ -101,11 +118,11 @@ function App() {
             mediaRecorder = new MediaRecorder(mediaStream);
 
             mediaRecorder.ondataavailable = ({ data }) => {
-                dataChunks.push(data)
+                dataChunks.push(data);
                 socketRef.current.emit('screenData:start', {
                     username: username.current,
                     data
-                })
+                });
             };
             mediaRecorder.onstop = stopRecording;
 
